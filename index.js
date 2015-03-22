@@ -26,7 +26,7 @@ function getButton(x,y,msg){
         return qq;;
  }
 app.get('/', function(req, res){
-  res.sendFile('/var/www/html/game/index.html');
+  res.sendFile('/var/www/html/shooter/index.html');
 });
 io.on('connection', function(socket){
   socket.on('button', function(msg){
