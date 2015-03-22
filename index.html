@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+     // setInterval(socket.emit('x','55'),300);
+    </script>
+
+  </head>
+  <body>
+   <script type='text/javascript'>
+            var CANVAS_WIDTH = 500;
+                var CANVAS_HEIGHT = 500;
+                var canvasElement = $("<canvas id='myCanvas' width='"+CANVAS_WIDTH+"' height='"+CANVAS_HEIGHT+"' style='border:1px solid #c3c3c3;'>");
+                var canvas = canvasElement.get(0).getContext("2d");
+                canvasElement.appendTo('body');
+                 var textX1 = 2;
+                 var textY1 = 2;
+    /*$(document).bind('keydown', 's', function(){
+           socket.emit('x','-1');
+     });*/
+     $(document).keypress(function(event){
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                
+                if(keycode == '115'){
+                    socket.emit('button','87');
+                } 
+               if(keycode == '119'){
+                    socket.emit('button','83');
+                }
+                 if(keycode == '97'){
+                    socket.emit('button','65');
+                }
+                 if(keycode == '100'){
+                    socket.emit('button','68');
+                }
+            });
+ 
+                  var FPS = 30;
+                setInterval(function() {
+                  update();
+                  draw();}, 1000/FPS);
+                 
+
+             socket.on('dataX', function(msg){
+                   textX1 = msg;
+                    return textX1;
+                  });
+                  
+            socket.on('dataY', function(msg){
+                   textY1 = msg;
+                    return textY1;
+             });
+
+              
+                function update() {
+                  //console.log(textN);
+                  textX = textX1;
+                  textY = textY1;
+             }
+
+                
+                  
+                  function draw() {
+                  canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                  canvas.fillStyle = "#000";
+                  canvas.fillText("player", textX  , textY);}
+    </script>
+    
+    <div> </div>
+  </body>
+</html>
