@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Shooter++</title>
+    <link rel="stylesheet/less" href="mycss.css">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -11,75 +12,89 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      #secondBlock{float:right; margin-right: 20%;}
     </style>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-      var socket = io();
-     // setInterval(socket.emit('x','55'),300);
-    </script>
-
   </head>
   <body>
    <script type='text/javascript'>
-            var CANVAS_WIDTH = 500;
-                var CANVAS_HEIGHT = 500;
-                var canvasElement = $("<canvas id='myCanvas' width='"+CANVAS_WIDTH+"' height='"+CANVAS_HEIGHT+"' style='border:1px solid #c3c3c3;'>");
-                var canvas = canvasElement.get(0).getContext("2d");
-                canvasElement.appendTo('body');
-                 var textX1 = 2;
-                 var textY1 = 2;
-    /*$(document).bind('keydown', 's', function(){
-           socket.emit('x','-1');
-     });*/
-     $(document).keypress(function(event){
-                var keycode = (event.keyCode ? event.keyCode : event.which);
-                
-                if(keycode == '115'){
-                    socket.emit('button','87');
-                } 
-               if(keycode == '119'){
-                    socket.emit('button','83');
-                }
-                 if(keycode == '97'){
-                    socket.emit('button','65');
-                }
-                 if(keycode == '100'){
-                    socket.emit('button','68');
-                }
-            });
- 
-                  var FPS = 30;
-                setInterval(function() {
-                  update();
-                  draw();}, 1000/FPS);
-                 
+    var socket = io();
+    var CANVAS_WIDTH = 500;
+    var CANVAS_HEIGHT = 500;
+    var canvasElement = $("<canvas id='myCanvas' width='"+CANVAS_WIDTH+"' height='"+CANVAS_HEIGHT+"' style='border:1px solid #c3c3c3;'>");
+    var canvas = canvasElement.get(0).getContext("2d");
+    canvasElement.appendTo('body');
+    var textX1 = 2;
+    var textY1 = 2;
+    var textX2 = 2;
+    var textY2 = 2;
 
-             socket.on('dataX', function(msg){
-                   textX1 = msg;
-                    return textX1;
-                  });
-                  
-            socket.on('dataY', function(msg){
-                   textY1 = msg;
-                    return textY1;
-             });
+     $(document).keypress(function(event){ //move players
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+          
+          if(keycode == '115'){
+              socket.emit('button','87');
+          } 
+         if(keycode == '119'){
+              socket.emit('button','83');
+          }
+           if(keycode == '97'){
+              socket.emit('button','65');
+          }
+           if(keycode == '100'){
+              socket.emit('button','68');
+          }
+      });
+        var FPS = 30;
+        setInterval(function() {
+          update();
+          draw();
+        }, 1000/FPS);
 
-              
-                function update() {
-                  //console.log(textN);
-                  textX = textX1;
-                  textY = textY1;
-             }
+        //parameters all objects: 
+        //players1:
+        socket.on('dataX', function(msg){ 
+              textX1 = msg;
+              return textX1;
+        });
+        socket.on('dataY', function(msg){
+              textY1 = msg;
+              return textY1;
+        });
 
-                
-                  
-                  function draw() {
-                  canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                  canvas.fillStyle = "#000";
-                  canvas.fillText("player", textX  , textY);}
+        //player2
+        socket.on('dataX2', function(msg){ 
+              textX2 = msg;
+              return textX2;
+        });
+        socket.on('dataY2', function(msg){
+              textY2 = msg;
+              return textY2;
+        });
+
+        //create our players
+        function update() {
+          textX = textX1;
+          textY = textY1;
+          textXP2 = textX2;
+          textYP2 = textY2;
+        }
+        function draw() {
+        canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        canvas.fillStyle = "#000";
+        canvas.fillText("player", textX  , textY);
+        canvas.fillText("player2222", textXP2  , textYP2);
+      }
+
+    
     </script>
     
-    <div> </div>
+    
+    <div id="secondBlock"> 
+      <div id="player1">Player 1</div>
+      <div id="player2"> Player 2</div>
+    </div>
+
   </body>
 </html>
