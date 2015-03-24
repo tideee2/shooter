@@ -13,6 +13,7 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
       #secondBlock{float:right; margin-right: 20%;}
+      .playerChoose{border: 1px solid black;width: 100px;height: 30px;border-radius: 2px; padding: 9px 20px; display: inline-block;cursor: pointer;}
     </style>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
@@ -25,18 +26,19 @@
     var canvasElement = $("<canvas id='myCanvas' width='"+CANVAS_WIDTH+"' height='"+CANVAS_HEIGHT+"' style='border:1px solid #c3c3c3;'>");
     var canvas = canvasElement.get(0).getContext("2d");
     canvasElement.appendTo('body');
-    var textX1 = 2;
-    var textY1 = 2;
-    var textX2 = 2;
-    var textY2 = 2;
+    var user = "u1";
+    var textX1 = 100;
+    var textY1 = 20;
+    var textX2 = 150;
+    var textY2 = 20;
+
 
      $(document).keypress(function(event){ //move players
       var keycode = (event.keyCode ? event.keyCode : event.which);
-          
           if(keycode == '115'){
               socket.emit('button','87');
           } 
-         if(keycode == '119'){
+          if(keycode == '119'){
               socket.emit('button','83');
           }
            if(keycode == '97'){
@@ -45,6 +47,7 @@
            if(keycode == '100'){
               socket.emit('button','68');
           }
+          socket.emit('user',user);
       });
         var FPS = 30;
         setInterval(function() {
@@ -54,24 +57,26 @@
 
         //parameters all objects: 
         //players1:
-        socket.on('dataX', function(msg){ 
-              textX1 = msg;
-              return textX1;
-        });
-        socket.on('dataY', function(msg){
-              textY1 = msg;
-              return textY1;
-        });
-
+     
+          socket.on('dataX', function(msg){ 
+                textX1 = msg;
+                return textX1;
+          });
+          socket.on('dataY', function(msg){
+                textY1 = msg;
+                return textY1;
+          });
+ 
         //player2
-        socket.on('dataX2', function(msg){ 
-              textX2 = msg;
-              return textX2;
-        });
-        socket.on('dataY2', function(msg){
-              textY2 = msg;
-              return textY2;
-        });
+      
+          socket.on('dataX1', function(msg){ 
+                textX2 = msg;
+                return textX2;
+          });
+          socket.on('dataY1', function(msg){
+                textY2 = msg;
+                return textY2;
+          });
 
         //create our players
         function update() {
@@ -79,22 +84,38 @@
           textY = textY1;
           textXP2 = textX2;
           textYP2 = textY2;
+          console.log(textYP2);
         }
         function draw() {
         canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.fillStyle = "#000";
-        canvas.fillText("player", textX  , textY);
-        canvas.fillText("player2222", textXP2  , textYP2);
+
+        canvas.fillText("player1", textX, textY);
+        canvas.fillText("player2", textXP2, textYP2);
       }
 
-    
     </script>
     
     
     <div id="secondBlock"> 
-      <div id="player1">Player 1</div>
-      <div id="player2"> Player 2</div>
+      <div class="playerChoose" id="player1box">Player 1</div>
+      <div class="playerChoose" id="player2box"> Player 2</div>
     </div>
+    <script>
+        $("#player1box").css("border","3px solid black");
+        $("#player1box").on("click", function(){
+          $("#player1box").css("border","3px solid black");
+          $("#player2box").css("border","1px solid black");
+          user = "u1";
+          return user;
+        });
+        $("#player2box").on("click", function(){
+          $("#player1box").css("border","1px solid black");
+          $("#player2box").css("border","3px solid black");
+          user = "u2";
+          return user;
+        });
+    </script>
 
   </body>
 </html>
