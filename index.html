@@ -4,7 +4,6 @@
     <title>Shooter++</title>
     <link rel="stylesheet/less" href="mycss.css">
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
@@ -13,7 +12,7 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
       #secondBlock{float:right; margin-right: 20%;}
-      .playerChoose{border: 1px solid black;width: 100px;height: 30px;border-radius: 2px; padding: 9px 20px; display: inline-block;cursor: pointer;}
+      .playerChoose{border: 1px solid black;width: 100px;height: 20px;border-radius: 2px; padding: 9px 20px; display: inline-block;cursor: pointer;}
     </style>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
@@ -32,6 +31,36 @@
     var textX2 = 150;
     var textY2 = 20;
 
+    //mouse click
+    document.addEventListener("DOMContentLoaded", init, false);
+      function init()
+      {
+        var canvas = document.getElementById("myCanvas");
+        canvas.addEventListener("mousedown", getPosition, false);
+      }
+      function getPosition(event)
+      {
+        var x = new Number();
+        var y = new Number();
+        var canvas = document.getElementById("myCanvas");
+        if (event.x != undefined && event.y != undefined)
+        {
+          x = event.x;
+          y = event.y;
+        }
+        else // Firefox method to get the position
+        {
+          x = event.clientX + document.body.scrollLeft +
+              document.documentElement.scrollLeft;
+          y = event.clientY + document.body.scrollTop +
+              document.documentElement.scrollTop;
+        }
+
+        x -= canvas.offsetLeft;
+        y -= canvas.offsetTop;
+
+        alert("x: " + x + "  y: " + y);
+      }
 
      $(document).keypress(function(event){ //move players
       var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -54,10 +83,8 @@
           update();
           draw();
         }, 1000/FPS);
-
         //parameters all objects: 
         //players1:
-     
           socket.on('dataX', function(msg){ 
                 textX1 = msg;
                 return textX1;
@@ -66,9 +93,7 @@
                 textY1 = msg;
                 return textY1;
           });
- 
         //player2
-      
           socket.on('dataX1', function(msg){ 
                 textX2 = msg;
                 return textX2;
@@ -84,24 +109,22 @@
           textY = textY1;
           textXP2 = textX2;
           textYP2 = textY2;
-          console.log(textYP2);
+          
         }
         function draw() {
         canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         canvas.fillStyle = "#000";
-
         canvas.fillText("player1", textX, textY);
         canvas.fillText("player2", textXP2, textYP2);
+        //canvas.fillText("bullet", bulletX, bulletY);
       }
 
     </script>
-    
-    
     <div id="secondBlock"> 
       <div class="playerChoose" id="player1box">Player 1</div>
       <div class="playerChoose" id="player2box"> Player 2</div>
     </div>
-    <script>
+    <script> //choose player
         $("#player1box").css("border","3px solid black");
         $("#player1box").on("click", function(){
           $("#player1box").css("border","3px solid black");

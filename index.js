@@ -4,7 +4,7 @@ var io = require('socket.io')(http);
 
 //dataB = {clwidth:300,clheight:400,u1:{x:109,y:10},u2:{x:100,y:150},bullets:{b1:{x:10,y:20,dx:5,dy:5},b2:{x:100,y:120,dx:3,dy:4}}};
 
-var dataB = {x:0,y:0,x1:0,y1:0};
+var dataB = {x:20,y:250,x1:450,y1:20};
 function getButton(x,y,x1,y1,msg,user){ //change position of players
   var qq ={};
   if (user === "u1"){ //move player 1
