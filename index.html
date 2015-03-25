@@ -55,11 +55,8 @@
           y = event.clientY + document.body.scrollTop +
               document.documentElement.scrollTop;
         }
-
         x -= canvas.offsetLeft;
         y -= canvas.offsetTop;
-
-        alert("x: " + x + "  y: " + y);
       }
 
      $(document).keypress(function(event){ //move players
@@ -109,17 +106,26 @@
           textY = textY1;
           textXP2 = textX2;
           textYP2 = textY2;
-          
         }
         function draw() {
+          //delete players
         canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        canvas.fillStyle = "#000";
-        canvas.fillText("player1", textX, textY);
-        canvas.fillText("player2", textXP2, textYP2);
-        //canvas.fillText("bullet", bulletX, bulletY);
+        
+        //draw players
+        var once = function(textX, textY){
+          canvas.strokeRect(textX, textY,20,20);
+        };
+        var twice = function(textXP2, textYP2){
+          canvas.fillStyle = "#FF0000";
+          canvas.fillRect(textXP2, textYP2,20,20);
+        }
+        once(textX, textY);
+        twice(textXP2, textYP2);
+      
       }
 
     </script>
+    
     <div id="secondBlock"> 
       <div class="playerChoose" id="player1box">Player 1</div>
       <div class="playerChoose" id="player2box"> Player 2</div>

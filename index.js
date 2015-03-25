@@ -59,12 +59,36 @@ io.on('connection', function(socket){
     dataB = getButton(dataB.x,dataB.y,dataB.x1,dataB.y1,msg, user);
     //console.log(dataB);
 
+    if(dataB.x <=0){
+      dataB.x = 0;
+    }
+    if(dataB.y <=0){
+      dataB.y = 0;
+    }
+    if(dataB.x1 <=0){
+      dataB.x1 = 0;
+    }
+    if(dataB.y1 <=0){
+      dataB.y1 = 0;
+    }
+     if(dataB.x >=479){
+      dataB.x = 479;
+    }
+    if(dataB.y >=479){
+      dataB.y = 479;
+    }
+    if(dataB.x1 >=479){
+      dataB.x1 = 479;
+    }
+    if(dataB.y1 >=479){
+      dataB.y1 = 479;
+    }
     //send info to html block
     io.emit('dataX', dataB.x);
     io.emit('dataY', dataB.y);
     io.emit('dataX1', dataB.x1);
     io.emit('dataY1', dataB.y1);
-    });
+  });
  
 });
 http.listen(1253, function(){
